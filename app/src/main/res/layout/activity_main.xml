@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blac_shade_1"
+    android:background="?colorOnPrimary"
     tools:context=".MainActivity">
 
     <!--edit text for searching our currency-->
@@ -19,8 +19,9 @@
         android:layout_marginBottom="8dp"
         android:focusable="auto"
         android:hint="Search joke"
+
         android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        />
 
     <!--recycler view for displaying the list of currencies-->
     <androidx.recyclerview.widget.RecyclerView
@@ -45,5 +46,13 @@
         android:layout_below="@id/idEdtCurrency"
         android:layout_centerHorizontal="true"
         android:text="Load more" />
+
+    <Switch
+        android:id="@+id/theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idEdtCurrency"
+        android:layout_alignParentRight="true"
+        android:text="Switch" />
 
 </RelativeLayout>

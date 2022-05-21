@@ -6,11 +6,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private CurrencyRVAdapter currencyRVAdapter;
     private ProgressBar loadingPB;
     int page=1;
+    private Switch themeSwitch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +53,20 @@ public class MainActivity extends AppCompatActivity {
         searchEdt = findViewById(R.id.idEdtCurrency);
         button = findViewById(R.id.button);
 
+        themeSwitch = findViewById(R.id.theme);
 
+        themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                    reset();
+                } else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                    reset();
+                }
+            }
+        });
         // initializing all our variables and array list.
         loadingPB = findViewById(R.id.idPBLoading);
         currencyRV = findViewById(R.id.idRVcurrency);
