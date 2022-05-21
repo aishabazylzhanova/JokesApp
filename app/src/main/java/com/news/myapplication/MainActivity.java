@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e("tag", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchEdt = findViewById(R.id.idEdtCurrency);
@@ -56,18 +58,7 @@ public class MainActivity extends AppCompatActivity {
         loadingBar = new ProgressDialog(this);
         themeSwitch = findViewById(R.id.theme);
 
-        themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                    reset();
-                } else{
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                    reset();
-                }
-            }
-        });
+
         // initializing all our variables and array list.
 
         currencyRV = findViewById(R.id.idRVcurrency);
@@ -81,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         // setting adapter to recycler view.
         currencyRV.setAdapter(currencyRVAdapter);
-
+        getData();
         // calling get data method to get data from API.
 
     }
@@ -89,16 +80,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getData();
 
-    }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
-        // on below line we are adding text watcher for our
-        // edit text to check the data entered in edittext.
+        Log.e("tag", "onStart");
 
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,6 +101,16 @@ public class MainActivity extends AppCompatActivity {
                 filter(s.toString());
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        Log.e("tag", "onResume");
+        super.onResume();
+        // on below line we are adding text watcher for our
+        // edit text to check the data entered in edittext.
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,6 +119,37 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+                } else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+                }
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        Log.e("tag", "onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("tag", "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("tag", "onDestroy");
 
     }
 
@@ -143,10 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // on below line we are checking
         // weather the list is empty or not.
-        if (filteredlist.isEmpty()) {
-            // if list is empty we are displaying a toast message.
-            Toast.makeText(this, "Theme has changed..", Toast.LENGTH_SHORT).show();
-        } else {
+        if (!filteredlist.isEmpty()) {
             // on below line we are calling a filter
             // list method to filter our list.
             currencyRVAdapter.filterList(filteredlist);
@@ -154,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getData() {
+        loadingBar.setTitle("Loading");
+        loadingBar.setMessage("Please, wait...");
+        loadingBar.setCanceledOnTouchOutside(false);
+        loadingBar.show();
         // creating a variable for storing our string.
         String url = "https://icanhazdadjoke.com/search?limit=30&page="+page;
         // creating a variable for request queue.
@@ -180,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     // notifying adapter on data change.
                     currencyRVAdapter.notifyDataSetChanged();
+                    loadingBar.dismiss();
 
                 } catch (JSONException e) {
                     // handling json exception.
