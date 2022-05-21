@@ -1,6 +1,7 @@
 package com.news.myapplication;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button;
     private ArrayList<CurrencyModal> currencyModalArrayList;
     private CurrencyRVAdapter currencyRVAdapter;
-    private ProgressBar loadingPB;
+    private ProgressDialog loadingBar;
     int page=1;
     private Switch themeSwitch;
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         searchEdt = findViewById(R.id.idEdtCurrency);
         button = findViewById(R.id.button);
-
+        loadingBar = new ProgressDialog(this);
         themeSwitch = findViewById(R.id.theme);
 
         themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // initializing all our variables and array list.
-        loadingPB = findViewById(R.id.idPBLoading);
+
         currencyRV = findViewById(R.id.idRVcurrency);
         currencyModalArrayList = new ArrayList<>();
 
@@ -90,8 +91,15 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         getData();
 
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
         // on below line we are adding text watcher for our
         // edit text to check the data entered in edittext.
+
         searchEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -118,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void filter(String filter) {
@@ -136,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         // weather the list is empty or not.
         if (filteredlist.isEmpty()) {
             // if list is empty we are displaying a toast message.
-            Toast.makeText(this, "No currency found..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Theme has changed..", Toast.LENGTH_SHORT).show();
         } else {
             // on below line we are calling a filter
             // list method to filter our list.
@@ -157,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 // from response and passing it to array list
                 // on below line we are making our progress
                 // bar visibility to gone.
-                loadingPB.setVisibility(View.GONE);
+
                 try {
                     // extracting data from json.
                     JSONArray dataArray = response.getJSONArray("results");
@@ -171,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     // notifying adapter on data change.
                     currencyRVAdapter.notifyDataSetChanged();
+
                 } catch (JSONException e) {
                     // handling json exception.
                     e.printStackTrace();

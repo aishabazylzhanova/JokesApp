@@ -31,13 +31,8 @@
         android:layout_below="@id/button"
         tools:listitem="@layout/currency_rv_item" />
 
-    <!--progress bar for loading indicator-->
-    <ProgressBar
-        android:id="@+id/idPBLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+
+
 
     <Button
         android:id="@+id/button"

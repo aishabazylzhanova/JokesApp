@@ -63,7 +63,7 @@ public class CurrencyRVAdapter extends RecyclerView.Adapter<CurrencyRVAdapter.Cu
     // on below line we are creating our view holder class
     // which will be used to initialize each view of our layout file.
     public class CurrencyViewholder extends RecyclerView.ViewHolder {
-        private TextView symbolTV, rateTV, nameTV;
+        private TextView nameTV;
 
         public CurrencyViewholder(@NonNull View itemView) {
             super(itemView);
